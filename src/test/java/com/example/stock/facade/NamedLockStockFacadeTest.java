@@ -15,11 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-@DisplayName("Optimistic Lock 테스트 ")
-class OptimisticLockStockFacadeTest {
+@DisplayName("Named Lock 테스트")
+class NamedLockStockFacadeTest {
 
 	@Autowired
-	private OptimisticLockStockFacade optimisticLockStockFacade;
+	private NamedLockStockFacade namedLockStockFacade;
 
 	@Autowired
 	private StockRepository stockRepository;
@@ -49,11 +49,7 @@ class OptimisticLockStockFacadeTest {
 		for (int i = 0; i < threadCount; i++) {
 			executorService.submit(() -> {
 				try {
-					try {
-						optimisticLockStockFacade.decrease(id, 1L);
-					} catch (InterruptedException e) {
-						throw new RuntimeException();
-					}
+					namedLockStockFacade.decrease(id, 1L);
 				} finally {
 					latch.countDown();
 				}
